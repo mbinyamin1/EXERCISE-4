@@ -25,6 +25,7 @@ namespace ADSPortEx4
     class Graph<T> where T : IComparable
     {
         private LinkedList<GraphNode<T>> nodes;
+        private Dictionary<T, int> weightedAdjList = new Dictionary<T, int>();
 
         public Graph()
         {
@@ -74,6 +75,7 @@ namespace ADSPortEx4
             foreach (GraphNode<T> current in nodes)
             {
                 count += current.GetAdjList().Count;
+                count += current.GetWeightedAdjList().Count;
             }
             return count;
         }
@@ -82,7 +84,13 @@ namespace ADSPortEx4
 
         public void AddWeightedEdge(T from, T to, int weight)
         {
-            throw new NotImplementedException();
+            GraphNode<T> n1 = GetNodeByID(from);
+            GraphNode<T> n2 = GetNodeByID(to);
+
+            if (n1 != null && n2 != null)
+            {
+                n1.AddEdgeWithWeight(n2, weight);
+            }
         }
 
         public double AverageOutbound()

@@ -23,14 +23,14 @@ namespace ADSPortEx4
 
             while (true)
             {
-                Console.WriteLine("\n--- GRAPH ---");
+                Console.WriteLine("\n--- MY LOOTED BANK ---");
                 Console.WriteLine("\n1. Add A Loot Node");
-                Console.WriteLine("2. Add An Edge Between Nodes");
+                Console.WriteLine("2. Add An Edge With Weight");
                 Console.WriteLine("3. Total Nodes");
                 Console.WriteLine("4. Total Edges");
                 Console.WriteLine("0. Exit");
 
-                Console.Write("\nEnter your choice: ");
+                Console.Write("\nEnter Your Choice: ");
                 string choice = Console.ReadLine();
 
                 if (choice == "1")
@@ -39,7 +39,7 @@ namespace ADSPortEx4
                 }
                 else if (choice == "2")
                 {
-                    AddEdge();
+                    AddEdgeWithWeight();
                 }
                 else if (choice == "3")
                 {
@@ -55,7 +55,7 @@ namespace ADSPortEx4
                 }
                 else
                 {
-                    Console.WriteLine("Invalid choice.");
+                    Console.WriteLine("\nInvalid Choice.");
                 }
             }
         }
@@ -64,18 +64,23 @@ namespace ADSPortEx4
             Console.Write("\nEnter Name Of The Looted Item: ");
             string itemName = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(itemName))
+            if (string.IsNullOrWhiteSpace(itemName))
             {
-                graph.AddNode(itemName);
-                Console.WriteLine($"Item Node '{itemName}' Added.");
+                Console.WriteLine("\nName Cannot Be Empty.");
+                return;
             }
-            else
+
+            if (graph.GetNodeByID(itemName) != null)
             {
-                Console.WriteLine("Name Cannot Be Empty.");
+                Console.WriteLine($"\nItem \"{itemName}\" Already Exists.");
+                return;
             }
+
+            graph.AddNode(itemName);
+            Console.WriteLine($"\nItem Node \"{itemName}\" Has Been Added Successfully.");
         }
 
-        static void AddEdge()
+        static void AddEdgeWithWeight()
         {
             if (graph.NumNodes() < 2)
             {
@@ -92,15 +97,34 @@ namespace ADSPortEx4
             var fromNode = graph.GetNodeByID(from);
             var toNode = graph.GetNodeByID(to);
 
-            if (fromNode == null || toNode == null)
+            if (fromNode == null)
             {
-                Console.WriteLine("One Or Both Node/s Do Not Exist.");
+                Console.WriteLine($"Node \"{from}\" Does Not Exist.");
+                return;
+            }
+            if (toNode == null)
+            {
+                Console.WriteLine($"Node \"{to}\" Does Not Exist.");
                 return;
             }
 
-            graph.AddEdge(from, to);
-            Console.WriteLine($"Edge Created From '{from}' To '{to}'.");
+            Console.Write("Enter Weight Of The Edge (1–10): ");
+            if (!int.TryParse(Console.ReadLine(), out int weight) || weight < 1 || weight > 10)
+            {
+                Console.WriteLine("Invalid Weight. Must Be Between 1 And 10.");
+                return;
+            }
+
+            if (fromNode.GetAdjList().Contains(to))
+            {
+                Console.WriteLine($"Edge From \"{from}\" To \"{to}\" Already Exists.");
+                return;
+            }
+
+            graph.AddWeightedEdge(from, to, weight);
+            Console.WriteLine($"Edge From \"{from}\" To \"{to}\" With Weight {weight} Has Been Created Successfully.");
         }
+
 
     }
 }

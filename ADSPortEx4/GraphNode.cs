@@ -20,6 +20,7 @@ namespace ADSPortEx4
     {
         private T id;
         private LinkedList<T> adjList;
+        private Dictionary<T, int> weightedAdjList = new Dictionary<T, int>();
 
         public GraphNode(T id)
         {
@@ -49,10 +50,13 @@ namespace ADSPortEx4
 
         public void AddEdgeWithWeight(GraphNode<T> to, int weight)
         {
-            throw new NotImplementedException();
+            weightedAdjList[to.ID] = weight;
         }
 
-
+        public Dictionary<T, int> GetWeightedAdjList()
+        {
+            return weightedAdjList;
+        }
 
     }// End of class
 }
