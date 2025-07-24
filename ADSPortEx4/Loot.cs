@@ -8,26 +8,31 @@ namespace ADSPortEx4
 {
     class Loot : IComparable
     {
+        private string name;
+        private double lootvalue;
+
         public Loot(string name, double lootvalue)
         {
-            throw new NotImplementedException();
+            this.name = name;
+            this.lootvalue = lootvalue;
         }
 
         public string Name
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return name; }
+            set { name = value; }
         }
 
         public double LootValue
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return lootvalue; }
+            set { lootvalue = value; }
         }
 
         public int CompareTo(object obj)
         {
-            throw new NotImplementedException();
+            Loot other = (Loot)obj;
+            return Name.CompareTo(other.Name);
         }
     }
 }

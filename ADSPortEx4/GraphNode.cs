@@ -18,27 +18,31 @@ namespace ADSPortEx4
 
     class GraphNode<T>
     {
+        private T id;
+        private LinkedList<T> adjList;
+
         public GraphNode(T id)
         {
-            throw new NotImplementedException();
+            this.id = id;
+            adjList = new LinkedList<T>();
         }
 
         //Functions for EX.4A
 
         public T ID
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return id; }
+            set { id = value; }
         }
 
         public void AddEdge(GraphNode<T> to)
         {
-            throw new NotImplementedException();
+            adjList.AddLast(to.ID);
         }
 
         public LinkedList<T> GetAdjList()
         {
-            throw new NotImplementedException();
+            return adjList;
         }
 
         //Functions for EX.4B
