@@ -95,17 +95,67 @@ namespace ADSPortEx4
 
         public double AverageOutbound()
         {
-            throw new NotImplementedException();
+            if (nodes.Count == 0) return 0;
+
+            int totalOutbound = 0;
+
+            foreach (GraphNode<T> node in nodes)
+            {
+                totalOutbound += node.GetAdjList().Count + node.GetWeightedAdjList().Count;
+            }
+
+            return (double)totalOutbound / nodes.Count;
         }
 
         public double AverageWeight()
         {
-            throw new NotImplementedException();
+            int totalWeight = 0;
+            int edgeCount = 0;
+
+            foreach (GraphNode<T> node in nodes)
+            {
+                Dictionary<T, int> weightedEdges = node.GetWeightedAdjList();
+                foreach (KeyValuePair<T, int> pair in weightedEdges)
+                {
+                    totalWeight += pair.Value;
+                    edgeCount++;
+                }
+            }
+
+            return edgeCount > 0 ? (double)totalWeight / edgeCount : 0;
         }
 
         public List<T> GetAllAdjacencies(T id)
         {
-            throw new NotImplementedException();
+            List<T> adjacents = new List<T>();
+
+            GraphNode<T> node = GetNodeByID(id);
+
+            if (node == null)
+            {
+                Console.WriteLine("Node not found.");
+                return adjacents;
+            }
+
+            LinkedList<T> list1 = node.GetAdjList();
+            foreach (T item in list1)
+            {
+                if (!adjacents.Contains(item))
+                {
+                    adjacents.Add(item);
+                }
+            }
+
+            Dictionary<T, int> list2 = node.GetWeightedAdjList();
+            foreach (T item in list2.Keys)
+            {
+                if (!adjacents.Contains(item))
+                {
+                    adjacents.Add(item);
+                }
+            }
+
+            return adjacents;
         }
 
         //Functions for EX.4C

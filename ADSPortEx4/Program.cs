@@ -28,6 +28,9 @@ namespace ADSPortEx4
                 Console.WriteLine("2. Add An Edge With Weight");
                 Console.WriteLine("3. Total Nodes");
                 Console.WriteLine("4. Total Edges");
+                Console.WriteLine("5. Show Average Outbound Edges");
+                Console.WriteLine("6. Show Average Edge Weight");
+                Console.WriteLine("7. Show All Adjacent Nodes");
                 Console.WriteLine("0. Exit");
 
                 Console.Write("\nEnter Your Choice: ");
@@ -48,6 +51,18 @@ namespace ADSPortEx4
                 else if (choice == "4")
                 {
                     Console.WriteLine($"\nTotal Edges in Graph: {graph.NumEdges()}");
+                }
+                else if (choice == "5")
+                {
+                    Console.WriteLine($"\nAverage Outbound Edges: {graph.AverageOutbound():F2}");
+                }
+                else if (choice == "6")
+                {
+                    Console.WriteLine($"\nAverage Weight of All Edges: {graph.AverageWeight():F2}");
+                }
+                else if (choice == "7")
+                {
+                    ShowAdjacents();
                 }
                 else if (choice == "0")
                 {
@@ -99,32 +114,64 @@ namespace ADSPortEx4
 
             if (fromNode == null)
             {
-                Console.WriteLine($"Node \"{from}\" Does Not Exist.");
+                Console.WriteLine($"\nNode \"{from}\" Does Not Exist.");
                 return;
             }
             if (toNode == null)
             {
-                Console.WriteLine($"Node \"{to}\" Does Not Exist.");
+                Console.WriteLine($"\nNode \"{to}\" Does Not Exist.");
                 return;
             }
 
             Console.Write("Enter Weight Of The Edge (1–10): ");
             if (!int.TryParse(Console.ReadLine(), out int weight) || weight < 1 || weight > 10)
             {
-                Console.WriteLine("Invalid Weight. Must Be Between 1 And 10.");
+                Console.WriteLine("\nInvalid Weight. Must Be Between 1 And 10.");
                 return;
             }
 
             if (fromNode.GetAdjList().Contains(to))
             {
-                Console.WriteLine($"Edge From \"{from}\" To \"{to}\" Already Exists.");
+                Console.WriteLine($"\nEdge From \"{from}\" To \"{to}\" Already Exists.");
                 return;
             }
 
             graph.AddWeightedEdge(from, to, weight);
-            Console.WriteLine($"Edge From \"{from}\" To \"{to}\" With Weight {weight} Has Been Created Successfully.");
+            Console.WriteLine($"\nEdge From \"{from}\" To \"{to}\" With Weight {weight} Has Been Created Successfully.");
         }
 
+        static void ShowAdjacents()
+        {
+            Console.Write("\nEnter Node Name To Show Adjacents: ");
+            string nodeId = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(nodeId))
+            {
+                Console.WriteLine("\nNode Name Cannot Be Empty.");
+                return;
+            }
+
+            var node = graph.GetNodeByID(nodeId);
+            if (node == null)
+            {
+                Console.WriteLine($"\nNode \"{nodeId}\" Does Not Exist.");
+                return;
+            }
+
+            List<string> adjacents = graph.GetAllAdjacencies(nodeId);
+            if (adjacents.Count == 0)
+            {
+                Console.WriteLine($"\nNode \"{nodeId}\" Has No Adjacent Nodes.");
+            }
+            else
+            {
+                Console.WriteLine($"\nAdjacent Nodes Of \"{nodeId}\":");
+                foreach (var adjacent in adjacents)
+                {
+                    Console.WriteLine($"- {adjacent}");
+                }
+            }
+        }
 
     }
 }
